@@ -315,7 +315,7 @@ class LiveChat extends React.Component {
                 {this.isLastMessageLeft(index) ? (
                   <span className="textTimeLeft">
                     <div className="time">
-                      {moment(Number(item.timestamp)).format("11")}
+                      {moment(Number(item.timestamp)).format("MM/DD/YYYY")}
                     </div>
                   </span>
                 ) : null}
@@ -385,7 +385,7 @@ class LiveChat extends React.Component {
                   <span className="textTimeLeft">
                     <div className="time">
                       <div className="timesetup">
-                        {moment(Number(item.timestamp)).format("ll")}
+                        {moment(Number(item.timestamp)).format("MM/DD/YYYY")}
                       </div>
                     </div>
                   </span>

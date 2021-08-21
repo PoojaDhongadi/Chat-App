@@ -15,7 +15,8 @@ class Signin extends React.Component {
       isLoading: false,
       email: "",
       password: "",
-      name: ""
+      name: "",
+      number: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,15 +28,22 @@ class Signin extends React.Component {
     });
   }
   async handleSubmit(event) {
-    const { name, password, email } = this.state;
+    const { name, password, email, number } = this.state;
     event.preventDefault();
-    this.setState({ isLoading: true });
-    try {
-      await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(async result => {
-          await firebase
+    //this.setState({ isLoading: true });
+    var recaptcha = new firebase.auth.RecaptchaVerifier("recaptcha");
+   
+    await firebase
+      .auth()
+      .signInWithPhoneNumber(number, recaptcha)
+      .then(function(e) {
+        var code = prompt("Enter the otp", "");
+        if (code === null) return;
+        
+        e.confirm(code)
+          .then(async function(result) {
+            //console.log(result.user);
+            await firebase
             .firestore()
             .collection("users")
             .add({
@@ -59,14 +67,14 @@ class Signin extends React.Component {
               this.setState({ isLoading: false });
               this.props.history.push("/chat");
             })
-            .catch(function(error) {
-              document.getElementById("1").innerHTML =
-                "User Already exit or poor internet";
-            });
-        });
-    } catch {
-      console.log("Failed To Authenticate");
-    }
+          })
+          .catch(function(error) {
+            console.error(error);
+          });
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
   }
   render() {
     const paper = {
@@ -93,6 +101,7 @@ class Signin extends React.Component {
             ) : null}
           </div>
         </Grid>
+        <div id="recaptcha"></div> 
         <Grid
           item
           xs={12}
@@ -166,6 +175,21 @@ class Signin extends React.Component {
                 autoFocus
                 onChange={this.handleChange}
                 value={this.state.name}
+                inputProps={{ style: { fontSize: 18 } }}
+                InputLabelProps={{ style: { fontSize: 18 } }}
+              />
+              <TextField
+                variant="standard"
+                margin="normal"
+                required
+                fullWidth
+                id="number"
+                label="Enter Phone Number"
+                name="number"
+                autoComplete="number"
+                autoFocus
+                onChange={this.handleChange}
+                value={this.state.number}
                 inputProps={{ style: { fontSize: 18 } }}
                 InputLabelProps={{ style: { fontSize: 18 } }}
               />

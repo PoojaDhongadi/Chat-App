@@ -157,8 +157,8 @@ class Signin extends React.Component {
                 autoFocus
                 onChange={this.handleChange}
                 value={this.state.email}
-                inputProps={{style: {fontSize: 18}}} // font size of input text
-                InputLabelProps={{style: {fontSize: 18}}} // font size of input label
+                inputProps={{ style: { fontSize: 18 } }} // font size of input text
+                InputLabelProps={{ style: { fontSize: 18 } }} // font size of input label
               />
               <TextField
                 variant="standard"
@@ -173,8 +173,8 @@ class Signin extends React.Component {
                 autoFocus
                 onChange={this.handleChange}
                 value={this.state.password}
-                inputProps={{style: {fontSize: 18}}}
-                InputLabelProps={{style: {fontSize: 18}}}
+                inputProps={{ style: { fontSize: 18 } }}
+                InputLabelProps={{ style: { fontSize: 18 } }}
               />
               <div className="CenterAliningItems">
                 <button className="button1" type="submit">
